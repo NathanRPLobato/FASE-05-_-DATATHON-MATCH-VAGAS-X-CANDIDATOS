@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard de Vagas</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="{{ url_for('index') }}">Home</a> |
+      <a href="{{ url_for('cadastrar_vaga') }}">Cadastrar Vaga</a> |
+      <a href="{{ url_for('cadastrar_candidato') }}">Cadastrar Candidato</a>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for cat, msg in messages %}
+          <div class="flash {{ cat }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}
+      <h1>Vagas Disponíveis</h1>
+      {% if vagas %}
+        <ul>
+          {% for vaga in vagas %}
+            <li>
+              [{{ vaga.id }}] {{ vaga.titulo }} – 
+              <a href="{{ url_for('match', vaga_id=vaga.id) }}">Match</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>Nenhuma vaga cadastrada.</p>
+      {% endif %}
+    {% endblock %}
+  </div>
+</body>
+</html>

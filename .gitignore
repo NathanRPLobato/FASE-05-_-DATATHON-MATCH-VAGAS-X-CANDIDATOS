@@ -1,0 +1,27 @@
+# Ambientes virtuais
+venv/
+env/
+.venv/
+
+# Bytecode Python
+__pycache__/
+*.py[cod]
+
+# Dados e bancos
+ml_api/data/**/*.csv
+ml_api/data/**/*.json
+ml_api/data/**/*.db
+
+# Modelos e artefatos pesados
+ml_api/model/*.pkl
+ml_api/model/*.joblib
+ml_api.zip
+
+# Logs
+*.log
+
+# IDEs / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

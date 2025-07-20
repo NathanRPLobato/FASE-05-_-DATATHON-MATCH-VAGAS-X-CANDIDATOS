@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <h2>Top 10 Candidatos</h2>
+  {% if ranking %}
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Compatibilidade (%)</th>
+      </tr>
+      {% for c in ranking %}
+      <tr>
+        <td>{{ c.id }}</td>
+        <td>{{ c.nome }}</td>
+        <td>{{ c.email }}</td>
+        <td>{{ c.compatibilidade }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>Nenhum candidato encontrado para esta vaga.</p>
+  {% endif %}
+  <a class="back-link" href="{{ url_for('index') }}">« Voltar</a>
+{% endblock %}

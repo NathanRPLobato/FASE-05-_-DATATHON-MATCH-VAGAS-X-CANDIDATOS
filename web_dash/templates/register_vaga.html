@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <h2>Cadastrar Vaga</h2>
+  <form method="post">
+    <label for="titulo">Título:</label>
+    <input type="text" id="titulo" name="titulo" required>
+
+    <label for="cliente">Cliente:</label>
+    <input type="text" id="cliente" name="cliente" required>
+
+    <label for="descricao">Descrição:</label>
+    <textarea id="descricao" name="descricao" rows="4" required></textarea>
+
+    <label for="competencias">Competências:</label>
+    <input type="text" id="competencias" name="competencias">
+
+    <button type="submit">Salvar</button>
+  </form>
+{% endblock %}

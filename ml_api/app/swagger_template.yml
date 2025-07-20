@@ -1,0 +1,275 @@
+openapi: 3.0.3
+info:
+  title: Match Vagas x Candidatos API
+  version: 1.0.0
+  description: >
+    API REST para cadastrar candidatos, cadastrar vagas e gerar
+    ranking dos 10 melhores candidatos para uma vaga específica.
+servers:
+  - url: http://localhost:5000
+paths:
+  /candidatos:
+    post:
+      summary: Cadastra um novo candidato
+      tags:
+        - Candidatos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidatoInput'
+      responses:
+        '201':
+          description: Candidato criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 123
+                  cluster:
+                    type: integer
+                    example: 5
+        '400':
+          description: Erro de payload inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Lista todos os candidatos
+      tags:
+        - Candidatos
+      responses:
+        '200':
+          description: Lista de candidatos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Candidato'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vagas:
+    post:
+      summary: Cadastra uma nova vaga
+      tags:
+        - Vagas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VagaInput'
+      responses:
+        '201':
+          description: Vaga criada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 42
+                  cluster:
+                    type: integer
+                    example: 3
+        '400':
+          description: Erro de payload inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Lista todas as vagas
+      tags:
+        - Vagas
+      responses:
+        '200':
+          description: Lista de vagas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vaga'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /match/{vaga_id}:
+    get:
+      summary: Rankeia top10 candidatos para vaga
+      tags:
+        - Match
+      parameters:
+        - in: path
+          name: vaga_id
+          required: true
+          schema:
+            type: integer
+            example: 42
+          description: ID da vaga
+      responses:
+        '200':
+          description: Lista dos 10 melhores candidatos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MatchEntry'
+        '404':
+          description: Vaga não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    CandidatoInput:
+      type: object
+      required:
+        - nome
+        - email
+        - cv_pt
+        - eh_sap
+      properties:
+        nome:
+          type: string
+          example: João Pereira
+        email:
+          type: string
+          format: email
+          example: joao.pereira@exemplo.com
+        cv_pt:
+          type: string
+          description: Texto completo do currículo em português
+        informacoes_profissionais:
+          type: object
+          description: Detalhes de experiências profissionais
+        formacao_e_idiomas:
+          type: object
+          description: Formação acadêmica e idiomas
+        eh_sap:
+          type: integer
+          description: Flag indicando presença de SAP (0 ou 1)
+
+    Candidato:
+      allOf:
+        - $ref: '#/components/schemas/CandidatoInput'
+        - type: object
+          required:
+            - id
+            - cluster
+            - texto_classificado
+          properties:
+            id:
+              type: integer
+              example: 123
+            cluster:
+              type: integer
+              example: 5
+            texto_classificado:
+              type: string
+              description: Texto após preprocessamento
+
+    VagaInput:
+      type: object
+      required:
+        - titulo
+        - cliente
+        - descricao
+        - eh_sap
+      properties:
+        titulo:
+          type: string
+          example: Engenheiro de Dados
+        cliente:
+          type: string
+          example: Empresa X
+        descricao:
+          type: string
+          example: Responsável por pipelines ETL e Big Data
+        competencias:
+          type: string
+          example: Python, SQL, AWS, Spark
+        eh_sap:
+          type: integer
+          description: Flag indicando presença de SAP (0 ou 1)
+
+    Vaga:
+      allOf:
+        - $ref: '#/components/schemas/VagaInput'
+        - type: object
+          required:
+            - id
+            - cluster
+            - texto_processado
+          properties:
+            id:
+              type: integer
+              example: 42
+            cluster:
+              type: integer
+              example: 3
+            texto_processado:
+              type: string
+              description: Texto após preprocessamento
+
+    MatchEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        nome:
+          type: string
+          example: João Pereira
+        email:
+          type: string
+          format: email
+          example: joao.pereira@exemplo.com
+        compatibilidade:
+          type: number
+          format: float
+          example: 87.65
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Mensagem de erro explicativa
