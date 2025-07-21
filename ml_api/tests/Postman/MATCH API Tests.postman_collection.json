@@ -1,0 +1,128 @@
+{
+	"info": {
+		"_postman_id": "671d1f6c-650d-4020-9c0f-de3a69b9e29d",
+		"name": "MATCH API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43135521"
+	},
+	"item": [
+		{
+			"name": "Criar Vaga",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"titulo\": \"Engenheiro de Dados\",\r\n  \"cliente\": \"Empresa Y\",\r\n  \"descricao\": \"Responsável por pipelines ETL e Big Data\",\r\n  \"competencias\": \"Python SQL AWS Spark\",\r\n  \"eh_sap\": 0\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/vagas/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"vagas",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar Candidato",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"João Pereira\",\r\n  \"email\": \"joao.pereira@exemplo.com\",\r\n  \"cv_pt\": \"Formação em Ciência da Computação, 5 anos de experiência em Python, SQL e Machine Learning.\",\r\n  \"informacoes_profissionais\": {\r\n    \"experiencias\": [\r\n      {\"cargo\":\"Desenvolvedor Python\",\"empresa\":\"TechCorp\",\"periodo\":\"2018-2021\"},\r\n      {\"cargo\":\"Data Engineer\",\"empresa\":\"DataWorks\",\"periodo\":\"2021-2025\"}\r\n    ]\r\n  },\r\n  \"formacao_e_idiomas\": {\r\n    \"formacao\": [\"Bacharel em Computação (UFSC)\", \"MBA em Data Science\"],\r\n    \"idiomas\": [\"Inglês Avançado\", \"Espanhol Intermediário\"]\r\n  },\r\n  \"eh_sap\": 0\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/candidatos/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"candidatos",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Match",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/match/145",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"match",
+						"145"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Chamar Vagas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/vagas/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"vagas",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Chamar Candidatos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/candidatos/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"candidatos",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
