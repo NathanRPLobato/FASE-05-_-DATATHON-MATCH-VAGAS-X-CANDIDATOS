@@ -1,0 +1,13 @@
+# .dockerignore
+
+# não envie os dados, logs, venv e builds antigos
+ml_api/data/*
+ml_api/data_extracted/
+ml_api/data_refined/
+ml_api/data_gold/
+reports/
+venv/
+__pycache__/
+*.pyc
+*.zip
+.DS_Store

@@ -1,22 +1,29 @@
-version: "3.8"
+version: '3.8'
+
 services:
-  api:
+  match-api:
     build:
       context: .
       dockerfile: ml_api/Dockerfile
+    image: match-api
+    container_name: match-api
     ports:
       - "5000:5000"
     volumes:
-      - ./ml_api:/app/ml_api
-      - ./ml_api/data:/app/ml_api/data
+      - ./ml_api/model:/app/ml_api/model     # garante que os .pkl e .joblib estejam dentro do container
+      - ./ml_api/data:/app/ml_api/data       # garante acesso ao banco SQLite
+    environment:
+      - FLASK_ENV=production
 
-  web:
+  match-web:
     build:
       context: .
       dockerfile: web_dash/Dockerfile
+    image: match-web
+    container_name: match-web
     ports:
       - "8000:8000"
-    environment:
-      - API_URL=http://api:5000
     depends_on:
-      - api
+      - match-api
+    environment:
+      - API_BASE=http://match-api:5000   # aponta para o nome do serviço no compose
