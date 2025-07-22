@@ -33,6 +33,21 @@
 
 ---
 
+## 📚 Documentação Swagger
+
+🔍 **Explore e teste** todos os endpoints da **Match Vagas × Candidatos API** diretamente no navegador!
+
+---
+
+### 🚀 Como acessar
+
+1. **Suba a API**  
+   ```bash
+   flask run --host=0.0.0.0 --port=5000
+   # ou via Docker: docker run -d -p 5000:5000 match-api
+
+---
+
 ## 🤖 Modelos de Machine Learning
 
 1. **🔸 Clustering (KMeans) Vagas & Candidatos**
@@ -177,6 +192,230 @@ Para rodar API e WebDash via Docker Compose:
 
 ---
 
+## 🔖 Especificação OpenAPI 3.0.3
+
+**Explore abaixo a definição completa da API**  
+
+```yaml
+openapi: 3.0.3
+info:
+  title: 📑 Match Vagas × Candidatos API
+  version: 1.0.0
+  description: >
+    API REST para cadastrar candidatos, cadastrar vagas e gerar
+    ranking dos 10 melhores candidatos para uma vaga específica.
+servers:
+  - url: http://localhost:5000
+
+paths:
+  /candidatos:
+    post:
+      summary: ➕ Criar candidato
+      tags: [Candidatos]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidatoInput'
+      responses:
+        '201':
+          description: ✅ Candidato criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  cluster:
+                    type: integer
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+    get:
+      summary: 📋 Listar todos os candidatos
+      tags: [Candidatos]
+      responses:
+        '200':
+          description: 📦 Array de candidatos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Candidato'
+        '500': { $ref: '#/components/responses/InternalError' }
+
+  /vagas:
+    post:
+      summary: ➕ Criar vaga
+      tags: [Vagas]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VagaInput'
+      responses:
+        '201':
+          description: ✅ Vaga criada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  cluster:
+                    type: integer
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+    get:
+      summary: 📋 Listar todas as vagas
+      tags: [Vagas]
+      responses:
+        '200':
+          description: 📦 Array de vagas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vaga'
+        '500': { $ref: '#/components/responses/InternalError' }
+
+  /match/{vaga_id}:
+    get:
+      summary: 🏆 Top‑10 candidatos para vaga
+      tags: [Match]
+      parameters:
+        - in: path
+          name: vaga_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 📊 Array de resultados de match
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MatchEntry'
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+components:
+  schemas:
+    CandidatoInput:
+      type: object
+      required: [nome, email, cv_pt, eh_sap]
+      properties:
+        nome:
+          type: string
+          example: João Pereira
+        email:
+          type: string
+          format: email
+          example: joao.pereira@exemplo.com
+        cv_pt:
+          type: string
+          description: Texto completo do currículo
+        informacoes_profissionais:
+          type: object
+        formacao_e_idiomas:
+          type: object
+        eh_sap:
+          type: integer
+          description: Flag SAP (0 ou 1)
+
+    Candidato:
+      allOf:
+        - $ref: '#/components/schemas/CandidatoInput'
+        - type: object
+          required: [id, cluster, texto_classificado]
+          properties:
+            id:
+              type: integer
+            cluster:
+              type: integer
+            texto_classificado:
+              type: string
+
+    VagaInput:
+      type: object
+      required: [titulo, cliente, descricao, eh_sap]
+      properties:
+        titulo:
+          type: string
+          example: Engenheiro de Dados
+        cliente:
+          type: string
+          example: Empresa X
+        descricao:
+          type: string
+        competencias:
+          type: string
+        eh_sap:
+          type: integer
+
+    Vaga:
+      allOf:
+        - $ref: '#/components/schemas/VagaInput'
+        - type: object
+          required: [id, cluster, texto_processado]
+          properties:
+            id:
+              type: integer
+            cluster:
+              type: integer
+            texto_processado:
+              type: string
+
+    MatchEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        email:
+          type: string
+          format: email
+        compatibilidade:
+          type: number
+
+  responses:
+    BadRequest:
+      description: ⚠️ Payload inválido
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: ❓ Recurso não encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalError:
+      description: 💥 Erro interno do servidor
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+```
+
+---
 ## 📞 Contato
 Nathan Rafael Pedroso Lobato
 ✉️ nathan.lobato@outlook.com.br
