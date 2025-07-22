@@ -1,25 +1,23 @@
-# ml_api/model/db_create/create_db_sqlite.py
-
 import os
 import sys
 import sqlite3
 import pandas as pd
 from pathlib import Path
 
-# Ajusta PYTHONPATH para que `import ml_api` funcione
+# Ajusta PYTHONPATH para que import ml_api funcione
 ROOT = Path(__file__).resolve().parents[3]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from ml_api.app.config import DB_PATH
 
-# Caminhos para os CSVs refinados
+# Caminhos para os CSVs refined
 CAND_CSV = ROOT / "ml_api" / "data" / "refined" / "candidatos.csv"
 VAGA_CSV = ROOT / "ml_api" / "data" / "refined" / "vagas.csv"
 
 
 def init_db(conn: sqlite3.Connection):
-    """(Re)cria as tabelas esperadas pela API: candidatos e vagas."""
+    """cria as tabelas esperadas pela API: candidatos e vagas."""
     c = conn.cursor()
     # Tabela candidatos
     c.execute("DROP TABLE IF EXISTS candidatos;")
@@ -99,7 +97,7 @@ def main():
     load_and_insert_vagas(conn)
 
     conn.close()
-    print(f"✅ Banco criado e populado em {DB_PATH}")
+    print(f"Banco criado e populado em {DB_PATH}")
 
 
 if __name__ == "__main__":

@@ -1,5 +1,3 @@
-# ml_api/app/routes/vagas.py
-# -*- coding: utf-8 -*-
 from flask import Blueprint, request, jsonify
 from ml_api.app.services.db import inserir_vaga, buscar_vagas
 from ml_api.app.services.clustering import cluster_vaga

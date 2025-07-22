@@ -1,5 +1,3 @@
-# ml_api/model/train_unsupervised_candidates.py
-
 import os
 import json
 import re

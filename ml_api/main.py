@@ -1,5 +1,3 @@
-# ml_api/main.py
-
 import os
 from flask import Flask, send_from_directory
 from flask_swagger_ui import get_swaggerui_blueprint
@@ -8,13 +6,12 @@ from ml_api.app import create_app
 # Cria a app principal
 app = create_app()
 
-# --- Rota para servir o seu swagger_template.yml que está em ml_api/app/ ---
+# Rota para servir o seu swagger_template.yml que está em ml_api/app/ ---
 @app.route('/swagger_template.yml')
 def swagger_yaml():
-    # app.root_path -> .../ml_api/app
     return send_from_directory(app.root_path, 'swagger_template.yml')
 
-# --- Swagger UI setup ---
+#Swagger UI Configuração
 SWAGGER_URL = '/docs'                 # URL da interface
 API_URL     = '/swagger_template.yml' # local onde o YAML é servido
 

@@ -1,6 +1,7 @@
 import sqlite3
 from ml_api.app.config import Config
 
+#Funções de CRUD para o banco de dados SQLite
 
 def get_connection():
     conn = sqlite3.connect(Config.SQLITE_PATH, check_same_thread=False)

@@ -1,11 +1,8 @@
-# ml_api/app/services/clustering.py
-# -*- coding: utf-8 -*-
-
 import joblib
 from pathlib import Path
 from ml_api.app.config import Config
 
-# --- Carrega modelo e vetor de candidatos ---
+#Carrega modelo e vetor de candidatos
 try:
     _cand_raw = joblib.load(Path(Config.CAND_CLUSTER_PATH))
     cand_vectorizer = _cand_raw['vectorizer']
@@ -15,7 +12,7 @@ except Exception as e:
     print(f"[ERRO] Falha ao carregar clustering candidatos: {e}")
     raise
 
-# --- Carrega modelo e vetor de vagas ---
+#Carrega modelo e vetor de vagas
 try:
     _vaga_raw = joblib.load(Path(Config.VAGA_CLUSTER_PATH))
     vaga_vectorizer = _vaga_raw['vectorizer']
@@ -25,7 +22,7 @@ except Exception as e:
     print(f"[ERRO] Falha ao carregar clustering vagas: {e}")
     raise
 
-
+#Clusteriza o Candidato
 def cluster_candidato(features: dict) -> int:
     """
     Extrai o texto_classificado, transforma em embedding e prediz o cluster.
@@ -37,6 +34,7 @@ def cluster_candidato(features: dict) -> int:
     return cluster
 
 
+#Clusteriza a vaga
 def cluster_vaga(features: dict) -> int:
     """
     Junta titulo+descricao, transforma em embedding e prediz o cluster.

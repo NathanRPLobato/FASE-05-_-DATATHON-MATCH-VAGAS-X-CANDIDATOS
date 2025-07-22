@@ -73,27 +73,27 @@ def classificar_candidatos(dados, modelo):
                 "nome": candidato.get("infos_basicas", {}).get("nome", ""),
                 "email": candidato.get("infos_basicas", {}).get("email", ""),
                 "cluster": cluster_id,
-                "texto_classificado": texto  # Novo campo com o texto usado no modelo
+                "texto_classificado": texto 
             })
         except Exception as e:
-            print(f"⚠️ Erro ao classificar candidato {id_cand}: {e}")
+            print(f"Erro ao classificar candidato {id_cand}: {e}")
     
     return resultados
 
 def salvar_csv(candidatos, path):
     df = pd.DataFrame(candidatos)
     df.to_csv(path, index=False, encoding='utf-8-sig')
-    print(f"✅ Arquivo salvo em {path}")
+    print(f"Arquivo salvo em {path}")
 
 def main():
-    print("🔍 Carregando dados e modelo...")
+    print("Carregando dados e modelo...")
     candidatos_json = load_candidates(JSON_PATH)
     modelo = joblib.load(MODEL_PATH)
 
-    print("🤖 Classificando candidatos...")
+    print("Classificando candidatos...")
     candidatos_classificados = classificar_candidatos(candidatos_json, modelo)
 
-    print(f"📦 Candidatos classificados: {len(candidatos_classificados)}")
+    print(f"Candidatos classificados: {len(candidatos_classificados)}")
     salvar_csv(candidatos_classificados, CSV_PATH)
 
 if __name__ == "__main__":

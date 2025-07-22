@@ -15,7 +15,7 @@ CAMINHO_SAIDA = "ml_api/data/refined/vagas.csv"
 
 # Carrega o modelo de clustering treinado
 modelo = joblib.load(CAMINHO_MODELO)
-print("✅ Modelo carregado com sucesso")
+print("Modelo carregado com sucesso")
 
 # Carrega o JSON com as vagas
 with open(CAMINHO_JSON, encoding="utf-8") as f:
@@ -44,7 +44,7 @@ for vaga_id, vaga in vagas_raw.items():
     try:
         cluster = modelo.predict([texto_completo])[0]
     except Exception as e:
-        print(f"⚠️ Erro ao classificar vaga {vaga_id}: {e}")
+        print(f"Erro ao classificar vaga {vaga_id}: {e}")
         continue
 
     # Verifica se a classificação retornou válida
@@ -67,4 +67,4 @@ for vaga_id, vaga in vagas_raw.items():
 df = pd.DataFrame(linhas_csv)
 os.makedirs(os.path.dirname(CAMINHO_SAIDA), exist_ok=True)
 df.to_csv(CAMINHO_SAIDA, index=False, encoding="utf-8-sig")
-print(f"✅ CSV com {len(df)} vagas salvas em: {CAMINHO_SAIDA}")
+print(f"CSV com {len(df)} vagas salvas em: {CAMINHO_SAIDA}")

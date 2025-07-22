@@ -1,10 +1,8 @@
-# web_dash/app.py
-
 import os
 import requests
 from flask import Flask, render_template, request, redirect, url_for
 
-# Base URL da API – permite sobrepor em Docker Compose via variável de ambiente
+# Define a URL base da API de Consumo
 API_BASE = os.getenv("API_BASE", "http://localhost:5000")
 
 app = Flask(__name__)
@@ -76,5 +74,4 @@ def match(vaga_id):
 
 
 if __name__ == '__main__':
-    # Escuta em todas as interfaces e porta 8000 dentro do container
     app.run(host='0.0.0.0', port=8000, debug=True)

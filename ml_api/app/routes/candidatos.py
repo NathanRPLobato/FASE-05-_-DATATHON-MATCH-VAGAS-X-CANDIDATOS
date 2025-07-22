@@ -12,12 +12,12 @@ def cria_candidato():
         data = request.get_json()
         print(f"[INFO] Recebendo candidato (antes de atribuir ID): {data}")
 
-        # 1) Gera novo ID: maior ID existente + 1
+        #Gerar novo ID: maior ID existente 
         cand_existentes = buscar_candidatos()
         max_id = max((c['id'] for c in cand_existentes), default=0)
         new_id = max_id + 1
 
-        # 2) Pré-processamento idêntico ao treino
+        #Pré-processamento idêntico ao treino
         processed_text = preprocessar_candidato({
             'cv_pt': data['cv_pt'],
             'informacoes_profissionais': data.get('informacoes_profissionais', {}),
@@ -25,18 +25,18 @@ def cria_candidato():
         })
         print(f"[DEBUG] Texto classificado (candidato): {processed_text}")
 
-        # 3) Monta features para clustering
+        # Monta features para clustering
         features = {
             'texto_classificado': processed_text,
             'eh_sap':             int(data.get('eh_sap', 0))
         }
         print(f"[DEBUG] Features candidato: {features}")
 
-        # 4) Aplica cluster
+        #Aplicar cluster
         cluster = cluster_candidato(features)
         print(f"[DEBUG] cluster_candidato -> {cluster}")
 
-        # 5) Persiste no DB (incluindo texto_classificado)
+        #Escreve no DB (incluindo texto_classificado)
         inserir_candidato({
             'id':                new_id,
             'nome':              data.get('nome', ''),

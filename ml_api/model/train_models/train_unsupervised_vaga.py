@@ -1,5 +1,3 @@
-# ml_api/model/train_unsupervised_vaga.py
-
 import os
 import json
 import joblib
